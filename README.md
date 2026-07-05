@@ -1,4 +1,4 @@
-# Graduation Project: Research and Implementation of a Security Operations Center (SOC) with a Multi-Layered Defense Architecture and a Centralized Incident Response System
+# Major Project: Research and Implementation of a Security Operations Center (SOC) with a Multi-Layered Defense Architecture and a Centralized Incident Response System
 
 ## Overview
 This project is a graduation thesis focused on designing and implementing a Security Operations Center (SOC) platform for cybersecurity monitoring and incident response. The system integrates multiple open-source security tools to collect, analyze, visualize, and respond to security events across network and system environments.
