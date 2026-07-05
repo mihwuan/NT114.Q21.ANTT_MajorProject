@@ -1,0 +1,84 @@
+azureuser@ELK:~$ sudo cat /var/ossec/etc/rules/local_rules.xml
+<!-- sudo cat /var/ossec/etc/rules/local_rules.xml -->
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+<group name="local,syslog,sshd,">
+  <!-- Kịch bản 1: Đánh chặn tự động Brute Force SSH -->
+  <rule id="100001" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <rule id="100200" level="12" frequency="8" timeframe="120">
+    <if_matched_sid>5712</if_matched_sid>
+    <same_source_ip/>
+    <description>SOAR ALERT: Phát hiện tấn công SSH Brute Force từ $(srcip)</description>
+    <group>authentication_failures,attack,</group>
+    <mitre><id>T1110</id></mitre>
+  </rule>
+</group>
+
+<group name="web,attack,ddos,xss,">
+  <!-- Kịch bản DDoS: Phát hiện công cụ ApacheBench -->
+  <rule id="100011" level="6">
+    <if_sid>31108, 31100</if_sid>
+    <match>ApacheBench</match>
+    <description>Web: Nhận diện HTTP Request từ công cụ ApacheBench (Nguồn: $(srcip))</description>
+  </rule>
+
+  <!-- Kịch bản DDoS: Kích hoạt SOAR khi bị HTTP Flood -->
+  <rule id="100010" level="12" frequency="50" timeframe="10">
+    <if_matched_sid>100011</if_matched_sid>
+    <same_source_ip />
+    <description>SOAR ALERT: Tấn công HTTP Flood/DDoS bằng ApacheBench từ nguồn $(srcip).</description>
+    <mitre><id>T1498</id></mitre>
+  </rule>
+
+  <!-- Kịch bản XSS: Bắt Payload Cross-Site Scripting -->
+  <rule id="100012" level="10">
+    <if_sid>31100, 31120</if_sid>
+    <match>script>|%3Cscript%3E|onerror=|onload=|javascript:</match>
+    <description>SOAR ALERT: Phát hiện nỗ lực tấn công Cross-Site Scripting (XSS) từ $(srcip)</description>
+    <mitre><id>T1190</id></mitre>
+  </rule>
+</group>
+
+<group name="soar_response,suricata,">
+  <!-- Kịch bản 2: Phân tích Malware / IDS Alert qua Suricata -->
+  <rule id="100101" level="12">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature">GPL ATTACK_RESPONSE|ET MALWARE|ET EXPLOIT</field>
+    <description>SOAR ALERT: Network IDS phát hiện dấu hiệu tải mã độc hoặc khai thác từ $(srcip) - Signature: $(alert.signature)</description>
+    <group>malware_drop,attack,</group>
+    <mitre><id>T1048</id></mitre>
+  </rule>
+</group>
+
+<group name="web,accesslog,brute_force,">
+
+  <!-- Bước 1: Bắt Request có chứa chữ "POST /login.php" trên toàn dòng log -->
+  <rule id="100050" level="3">
+    <if_sid>31100,31108</if_sid>
+    <match>POST /login.php</match>
+    <description>Web: Nhận diện một nỗ lực POST vào trang đăng nhập từ $(srcip)</description>
+  </rule>
+
+  <!-- Bước 2: Bắt hành vi Brute Force để bắn Webhook sang Shuffle -->
+  <rule id="100051" level="10" frequency="10" timeframe="60">
+    <if_matched_sid>100050</if_matched_sid>
+    <same_source_ip />
+    <description>SOAR ALERT: Tấn công Brute Force Web Form (Hydra) từ $(srcip)</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failures,</group>
+  </rule>
+
+</group>
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mô phỏng Toàn diện SOC SIEM/SOAR Hybrid</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .status-box { background: white; padding: 15px 30px; border-radius: 50px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-weight: bold; color: #1e293b; margin-bottom: 20px; border-left: 6px solid #3b82f6; min-width: 500px; text-align: center; }
+        .canvas { position: relative; width: 960px; height: 550px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; overflow: hidden; }
+        .zone { position: absolute; top: 20px; bottom: 20px; border: 2px dashed #cbd5e0; border-radius: 10px; z-index: 1; }
+        .zone-local { left: 20px; width: 420px; background: #f0fdf4; border-color: #86efac; }
+        .zone-cloud { right: 20px; width: 420px; background: #f0f9ff; border-color: #7dd3fc; }
+        .zone-tag { position: absolute; top: 10px; left: 15px; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+        line { stroke: #94a3b8; stroke-width: 2; }
+        .vpn-line { stroke: #ca8a04; stroke-width: 3; stroke-dasharray: 8; }
+        .loop-line { stroke: #3b82f6; stroke-width: 2; stroke-dasharray: 4; }
+        .node { position: absolute; width: 55px; height: 55px; background: white; border: 2px solid #94a3b8; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3; transform: translate(-50%, -50%); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .node-label { position: absolute; top: 60px; font-size: 11px; font-weight: bold; white-space: nowrap; color: #334155; text-align: center; line-height: 1.2; }
+        .particle { position: absolute; width: 14px; height: 14px; border-radius: 50%; z-index: 4; transform: translate(-50%, -50%); pointer-events: none; }
+        .controls { margin-top: 25px; display: flex; gap: 15px; }
+        button { padding: 12px 24px; border: none; background: #2563eb; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.2s; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2); }
+        button:hover { background: #1d4ed8; transform: translateY(-2px); }
+        button:disabled { background: #94a3b8; transform: none; box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <div class="status-box" id="status">Hệ thống sẵn sàng. Vui lòng chọn bước mô phỏng.</div>
+
+    <div class="canvas" id="canvas">
+        <div class="zone zone-local"><span class="zone-tag">Local Lab (VMware)</span></div>
+        <div class="zone zone-cloud"><span class="zone-tag">Azure Cloud Infra</span></div>
+        <svg id="svg-layer"></svg>
+        
+        <div class="node" id="n-atk" style="left:100px; top:120px;">🔥<span class="node-text">Attacker</span></div>
+        <div class="node" id="n-tgt" style="left:100px; top:400px;">🖥️<span class="node-text">Target</span></div>
+        <div class="node" id="n-nsm" style="left:260px; top:400px;">👁️<span class="node-text">Suricata</span></div>
+        <div class="node" id="n-pfs" style="left:380px; top:260px;">🚪<span class="node-text">pfSense</span></div>
+        <div class="node" id="n-wzh" style="left:560px; top:260px;">🧠<span class="node-text">Wazuh(VM1)</span></div>
+        <div class="node" id="n-elk" style="left:820px; top:120px;">📊<span class="node-text">ELK(VM2)</span></div>
+        <div class="node" id="n-soar" style="left:820px; top:400px;">⚡<span class="node-text">SOAR(VM3)</span></div>
+    </div>
+
+    <div class="controls">
+        <button id="b1" onclick="flow1()">1. Tấn công & Log SIEM</button>
+        <button id="b2" onclick="flow2()">2. Phản ứng & Chặn IP</button>
+        <button id="b3" onclick="flow3()">3. SOAR Logging (Loop)</button>
+    </div>
+
+    <script>
+        const nodes = {
+            atk: [100, 120], tgt: [100, 400], nsm: [260, 400],
+            pfs: [380, 260], wzh: [560, 260], elk: [820, 120], soar: [820, 400]
+        };
+        const svg = document.getElementById('svg-layer');
+        function draw(a, b, cls) {
+            const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            l.setAttribute("x1", nodes[a][0]); l.setAttribute("y1", nodes[a][1]);
+            l.setAttribute("x2", nodes[b][0]); l.setAttribute("y2", nodes[b][1]);
+            if(cls) l.classList.add(cls);
+            svg.appendChild(l);
+        }
+        draw('atk', 'tgt'); draw('tgt', 'nsm'); draw('nsm', 'pfs');
+        draw('pfs', 'wzh', 'vpn-line'); draw('wzh', 'elk'); draw('wzh', 'soar');
+        draw('soar', 'elk', 'loop-line');
+
+        async function move(from, to, color, speed=900) {
+            return new Promise(res => {
+                const p = document.createElement('div');
+                p.className = 'particle'; p.style.background = color;
+                p.style.boxShadow = `0 0 10px ${color}`;
+                p.style.left = nodes[from][0]+'px'; p.style.top = nodes[from][1]+'px';
+                document.getElementById('canvas').appendChild(p);
+                p.animate([
+                    { left: nodes[from][0]+'px', top: nodes[from][1]+'px' },
+                    { left: nodes[to][0]+'px', top: nodes[to][1]+'px' }
+                ], { duration: speed, easing: 'ease-in-out' }).onfinish = () => { p.remove(); res(); };
+            });
+        }
+        function setStatus(t) { document.getElementById('status').innerText = t; }
+
+        async function flow1() {
+            setStatus("🚩 Tấn công Brute-force đang diễn ra tại Local Lab...");
+            await move('atk', 'tgt', '#ef4444');
+            setStatus("🔍 Suricata phát hiện và gửi Alert JSON về pfSense...");
+            await move('tgt', 'nsm', '#f59e0b', 600);
+            await move('nsm', 'pfs', '#f59e0b', 600);
+            setStatus("🔐 Log được mã hóa và đẩy qua WireGuard VPN lên Wazuh Manager...");
+            await move('pfs', 'wzh', '#ca8a04', 1200);
+            setStatus("💾 Wazuh đẩy Alert sang ELK để lưu trữ và hiển thị Dashboard.");
+            await move('wzh', 'elk', '#3b82f6', 1000);
+        }
+
+        async function flow2() {
+            setStatus("🚀 Alert mức độ cao kích hoạt Webhook sang Shuffle SOAR...");
+            await move('wzh', 'soar', '#ec4899', 800);
+            setStatus("🤖 SOAR thực thi Playbook: Ra lệnh cho pfSense chặn IP Attacker...");
+            await move('soar', 'wzh', '#ef4444', 600);
+            await move('wzh', 'pfs', '#ef4444', 1000);
+            setStatus("✅ pfSense: Firewall Rule Added. IP 1.2.3.4 bị chặn.");
+        }
+
+        async function flow3() {
+            setStatus("📝 SOAR đang gửi Nhật ký hành động (Audit Log) về ELK...");
+            await move('soar', 'elk', '#3b82f6', 1200);
+            setStatus("✅ Hoàn tất vòng lặp: Hành động phản ứng đã được lưu trữ tập trung tại ELK.");
+        }
+    </script>
+</body>
+</html>

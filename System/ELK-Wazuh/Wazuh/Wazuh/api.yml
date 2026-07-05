@@ -1,0 +1,26 @@
+# sudo cat /var/ossec/api/configuration/api.yaml
+host: ['0.0.0.0']
+port: 55000
+drop_privileges: true
+experimental_features: false
+https:
+  enabled: true
+  key: 'server.key'
+  cert: 'server.crt'
+  use_ca: false
+
+logs:
+  level: info
+  path: logs/api.log
+
+cors:
+  enabled: false
+  source_route: '*'
+  expose_headers: '*'
+  allow_headers: '*'
+  allow_credentials: false
+
+access:
+  max_login_attempts: 5
+  block_time: 300
+  max_request_per_minute: 300

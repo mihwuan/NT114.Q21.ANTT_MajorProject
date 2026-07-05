@@ -1,0 +1,16 @@
+# POST https://openrouter.ai/api/v1/chat/completions
+# Authorization: Bearer <Key>
+# Content-Type: application/json
+{
+  "model": "liquid/lfm-2.5-1.2b-thinking:free",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Bạn là một Chuyên gia phân tích SOC (SOC Analyst). Hãy phân tích cảnh báo bảo mật sau và đưa ra phản hồi BẮT BUỘC DƯỚI DẠNG JSON với cấu trúc: {\"severity\": \"critical/high/medium/low\", \"action\": \"block/monitor\", \"reason\": \"lý do ngắn gọn\"}. Chỉ trả về JSON."
+    },
+    {
+      "role": "user",
+      "content": "Tên cảnh báo: $exec.all_fields.rule.description\nMức độ (Level): $exec.all_fields.rule.level\nIP Tấn công: $exec.all_fields.data.srcip"
+    }
+  ]
+}

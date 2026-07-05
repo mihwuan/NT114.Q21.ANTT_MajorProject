@@ -1,0 +1,33 @@
+[
+  {
+    "_id": "~73912",
+    "_type": "Alert",
+    "_createdBy": "admin@gmail.com",
+    "_createdAt": 1782658572058,
+    "type": "Alert",
+    "source": "n8n-SOAR",
+    "sourceRef": "wazuh",
+    "title": "Security Alert: Unknown - Suspicious Activity",
+    "description": "Auto-generated alert Không parse được kết quả từ AI",
+    "severity": 3,
+    "severityLabel": "HIGH",
+    "date": 1782658312000,
+    "tags": [
+      "\"auto\"]",
+      "\"medium\"",
+      "[\"wazuh\""
+    ],
+    "tlp": 2,
+    "tlpLabel": "AMBER",
+    "pap": 2,
+    "papLabel": "AMBER",
+    "follow": true,
+    "customFields": [],
+    "observableCount": 1,
+    "status": "New",
+    "stage": "New",
+    "extraData": {},
+    "newDate": 1782658572055,
+    "timeToDetect": 260055
+  }
+]

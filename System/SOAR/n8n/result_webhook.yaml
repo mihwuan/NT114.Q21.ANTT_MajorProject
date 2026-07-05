@@ -1,0 +1,207 @@
+[
+  {
+    "headers": {
+      "host": "20-196-128-193.nip.io:5678",
+      "user-agent": "Shuffle Automation",
+      "accept-encoding": "gzip, deflate",
+      "accept": "*/*",
+      "connection": "keep-alive",
+      "content-type": "application/json",
+      "content-length": "9365"
+    },
+    "params": {},
+    "query": {},
+    "body": {
+      "alert_context": {
+        "severity": 3,
+        "pretext": "WAZUH Alert",
+        "title": "Multiple authentication failures.",
+        "text": "Jun 28 03:46:21 server-virtual-machine sshd[115583]: Failed password for root from 10.18.10.133 port 54570 ssh2",
+        "rule_id": "40111",
+        "timestamp": "2026-06-28T03:46:23.039+0000",
+        "id": "1782618383.7382303",
+        "all_fields": {
+          "timestamp": "2026-06-28T03:46:23.039+0000",
+          "rule": {
+            "level": 10,
+            "description": "Multiple authentication failures.",
+            "id": "40111",
+            "mitre": {
+              "id": [
+                "T1110"
+              ],
+              "tactic": [
+                "Credential Access"
+              ],
+              "technique": [
+                "Brute Force"
+              ]
+            },
+            "frequency": 12,
+            "firedtimes": 5,
+            "mail": false,
+            "groups": [
+              "syslog",
+              "attacks",
+              "authentication_failures"
+            ],
+            "pci_dss": [
+              "10.2.4",
+              "10.2.5"
+            ],
+            "gpg13": [
+              "7.1",
+              "7.8"
+            ],
+            "gdpr": [
+              "IV_35.7.d",
+              "IV_32.2"
+            ],
+            "hipaa": [
+              "164.312.b"
+            ],
+            "nist_800_53": [
+              "AU.14",
+              "AC.7"
+            ],
+            "tsc": [
+              "CC6.1",
+              "CC6.8",
+              "CC7.2",
+              "CC7.3"
+            ]
+          },
+          "agent": {
+            "id": "006",
+            "name": "server-virtual-machine",
+            "ip": "192.168.69.100"
+          },
+          "manager": {
+            "name": "ELK"
+          },
+          "id": "1782618383.7382303",
+          "previous_output": "Jun 28 03:46:21 server-virtual-machine sshd[115574]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 54492 ssh2 [preauth]\nJun 28 03:46:21 server-virtual-machine sshd[115574]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 54492 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115552]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.18.10.133  user=root\nJun 28 03:46:08 server-virtual-machine sshd[115555]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.18.10.133  user=root\nJun 28 03:46:08 server-virtual-machine sshd[115555]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43290 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115555]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43290 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115551]: PAM 5 more authentication failures; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.18.10.133  user=root\nJun 28 03:46:08 server-virtual-machine sshd[115552]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43250 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115552]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43250 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115551]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43240 ssh2 [preauth]\nJun 28 03:46:08 server-virtual-machine sshd[115551]: error: maximum authentication attempts exceeded for root from 10.18.10.133 port 43240 ssh2 [preauth]",
+          "full_log": "Jun 28 03:46:21 server-virtual-machine sshd[115583]: Failed password for root from 10.18.10.133 port 54570 ssh2",
+          "predecoder": {
+            "program_name": "sshd",
+            "timestamp": "Jun 28 03:46:21",
+            "hostname": "server-virtual-machine"
+          },
+          "decoder": {
+            "parent": "sshd",
+            "name": "sshd"
+          },
+          "data": {
+            "srcip": "10.18.10.133",
+            "srcport": "54570",
+            "dstuser": "root"
+          },
+          "location": "journald"
+        }
+      },
+      "opencti_result": {
+        "status": 200,
+        "body": {
+          "data": {
+            "indicators": {
+              "edges": []
+            }
+          }
+        },
+        "url": "http://20.196.128.193:8080/graphql",
+        "headers": {
+          "X-Powered-By": "Express",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=utf-8",
+          "Content-Length": "37",
+          "ETag": "W/\"25-eoo/JpYWZPBGTFottFqibZaO/ZI\"",
+          "Set-Cookie": "opencti_session=s%3Aj-LYSL_83BpTMKMNWY25jT5nJ3pPhHT2.t853WLQ6IfKET%2Fv4uMM7utvmSam8WlFVmGLDEdQjIlA; Path=/; Expires=Sun, 28 Jun 2026 04:08:41 GMT; HttpOnly; SameSite=Lax",
+          "Date": "Sun, 28 Jun 2026 03:48:41 GMT",
+          "Connection": "keep-alive",
+          "Keep-Alive": "timeout=5"
+        },
+        "cookies": {
+          "opencti_session": "s%3Aj-LYSL_83BpTMKMNWY25jT5nJ3pPhHT2.t853WLQ6IfKET%2Fv4uMM7utvmSam8WlFVmGLDEdQjIlA"
+        },
+        "success": true
+      },
+      "ai_analysis": {
+        "status": 200,
+        "body": {
+          "id": "gen-1782618516-t6dppKcoOQQRbEID1fHk",
+          "object": "chat.completion",
+          "created": 1782618516,
+          "model": "liquid/lfm-2.5-1.2b-thinking-20260120:free",
+          "provider": "Liquid",
+          "system_fingerprint": null,
+          "service_tier": null,
+          "choices": [
+            {
+              "index": 0,
+              "logprobs": null,
+              "finish_reason": "stop",
+              "native_finish_reason": "stop",
+              "message": {
+                "role": "assistant",
+                "content": "```json\n{\n  \"severity\": \"critical\",\n  \"action\": \"block\",\n  \"reason\": \"Multiple authentication failures present a severe security risk requiring immediate mitigation.\"\n}\n```",
+                "refusal": null,
+                "reasoning": "Okay chim riêng! Mỗi đây là việc xem xét cảnh báo bảo mật và trả lời theo CPU mà sao cho phù hợp với cấu trúc mà yêu cầu cho. \n\nĐầu tiên, câu trả lời cần quan trọng nhất là giữ nguyên yêu cầu từ người dùng. Họ đưa ra:\n- Severity: \"Multiple authentication failures.\"\n- Level: 10\n- IP Tấn công: 10.18.10.133\n\nThem chúng ta cần xác định Lục độ (Level/severity) và đưa ra hành động và lý do ngắn gọn. \n\nLevel 10 quá cao, xấu sức. Cảnh báo \"Multiple authentication failures\" rõ ràng gây lo đến an toàn hỗn hợp. Severity là \"critical\". \n\nAction cần block để ngăn các hoảng loạn kỹ thuật. Reason là do tên tên cảnh báo cho mức lo ngại cao. \n\nVấn đề nếu không block đúng. \n\nSo sánh với yêu cầu: không tình thế mà còn có yếu tố \"giá trị trực quan\". \n\nCuối cùng, phản hồi nên là JSON như yêu cảm. \n\nVì user yêu cầu trả về JSON chỉ, cẩn thận: deprivation cylinder\" exact después. Bây giờ giải thích ngắn biến đổi, nhưng trong JSON mình nên dùng biểu đồ giải thích thông tin dẫn nội dung.\n",
+                "reasoning_details": [
+                  {
+                    "type": "reasoning.text",
+                    "text": "Okay chim riêng! Mỗi đây là việc xem xét cảnh báo bảo mật và trả lời theo CPU mà sao cho phù hợp với cấu trúc mà yêu cầu cho. \n\nĐầu tiên, câu trả lời cần quan trọng nhất là giữ nguyên yêu cầu từ người dùng. Họ đưa ra:\n- Severity: \"Multiple authentication failures.\"\n- Level: 10\n- IP Tấn công: 10.18.10.133\n\nThem chúng ta cần xác định Lục độ (Level/severity) và đưa ra hành động và lý do ngắn gọn. \n\nLevel 10 quá cao, xấu sức. Cảnh báo \"Multiple authentication failures\" rõ ràng gây lo đến an toàn hỗn hợp. Severity là \"critical\". \n\nAction cần block để ngăn các hoảng loạn kỹ thuật. Reason là do tên tên cảnh báo cho mức lo ngại cao. \n\nVấn đề nếu không block đúng. \n\nSo sánh với yêu cầu: không tình thế mà còn có yếu tố \"giá trị trực quan\". \n\nCuối cùng, phản hồi nên là JSON như yêu cảm. \n\nVì user yêu cầu trả về JSON chỉ, cẩn thận: deprivation cylinder\" exact después. Bây giờ giải thích ngắn biến đổi, nhưng trong JSON mình nên dùng biểu đồ giải thích thông tin dẫn nội dung.\n",
+                    "format": "unknown",
+                    "index": 0
+                  }
+                ]
+              }
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 209,
+            "completion_tokens": 642,
+            "total_tokens": 851,
+            "cost": 0,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0,
+              "upstream_inference_prompt_cost": 0,
+              "upstream_inference_completions_cost": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 375,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        },
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "headers": {
+          "Date": "Sun, 28 Jun 2026 03:48:36 GMT",
+          "Content-Type": "application/json",
+          "Transfer-Encoding": "chunked",
+          "Connection": "keep-alive",
+          "Access-Control-Allow-Origin": "*",
+          "X-Generation-Id": "gen-1782618516-t6dppKcoOQQRbEID1fHk",
+          "access-control-expose-headers": "X-Generation-Id,cf-ray",
+          "Permissions-Policy": "payment=(self \"https://checkout.stripe.com\" \"https://connect-js.stripe.com\" \"https://js.stripe.com\" \"https://*.js.stripe.com\" \"https://hooks.stripe.com\")",
+          "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin",
+          "X-Content-Type-Options": "nosniff",
+          "Content-Encoding": "gzip",
+          "Server": "cloudflare",
+          "CF-RAY": "a129b7800a3cde6f-ICN"
+        },
+        "cookies": {},
+        "success": true
+      }
+    },
+    "webhookUrl": "http://20-196-128-193.nip.io:5678/webhook/8ad5233c-398f-4bec-8c7b-87f7accf090c",
+    "executionMode": "production"
+  }
+]
