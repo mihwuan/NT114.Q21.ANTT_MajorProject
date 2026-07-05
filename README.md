@@ -35,12 +35,13 @@ The system is organized into several layers:
 ### Architecture Diagram
 ![System Architecture](Figure/Architecture.png)
 
-### Monitoring and Workflow Visuals
-![Azure Graph](Figure/Graph_Azure.png)
-
+### Workflow Visuals
 ![n8n Workflow](Figure/Workflow_n8n.png)
 
 ![Shuffle Workflow](Figure/Workflow_Shuffle.png)
+
+### Azure Implementation
+![Azure Graph](Figure/Graph_Azure.png)
 
 ## Project Structure
 - BCTD/: experiment and lab-related materials
